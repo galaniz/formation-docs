@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "target": "es2024",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noFallthroughCasesInSwitch": true,
+    "declaration": true,
+    "removeComments": true,
+    "outDir": "lib",
+    "lib": [
+      "es2024"
+    ]
+  },
+  "include": [
+    "**/*.ts",
+    "jsdoc.d.ts"
+  ],
+  "exclude": [
+    "lib",
+    "docs",
+    "node_modules",
+    "coverage"
+  ]
+}

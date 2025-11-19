@@ -1,0 +1,83 @@
+// src/button/button.ts
+// src/button/buttonTypes.ts
+// src/form/__tests__/form.test.ts
+// src/form/form.ts
+/**
+ * Form
+ *
+ * @file
+ * title: Form Components
+ * Output form, field and option elements.
+ */
+import type { FormType } from './formTypes.js'
+/**
+ * Outputs form element.
+ *
+ * @param {FormType} type
+ * @return {string}
+ */
+const Form = (type: FormType): string => {
+  // ...
+}
+// src/form/formTypes.ts:
+/**
+ * @typedef {'a'|'b'|'c'} FormType
+ */
+export type FormType = 'a' | 'b' | 'c'
+
+// =========================================================================
+
+import { getDocs } from '@alanizcreative/formation-docs/docs.js'
+
+const result = await getDocs({
+  include: 'src/**\/*.ts',
+  exclude: 'src/**\/*.test.ts',
+  docsInclude: 'src/form/**\/*.ts',
+  docsExclude: 'src/**\/*Types.ts'
+})
+
+result = {
+  'src/form': {
+    content: [
+      { tag: 'h1', content: 'Form Components' },
+      { tag: 'p', content: 'Output form, field and option elements.' },
+      { tag: 'h2', content: 'Form' },
+      { tag: 'p', content: [{
+        tag: 'strong', content: [{
+          tag: 'code', content: [{
+            content: 'Form(type: FormType): string'
+          }]
+        }]}
+      ]},
+      { tag: 'p', content: 'Outputs form element.' },
+      { tag: 'h2', content: 'Parameters' },
+      { tag: 'dl', content: [{
+        tag: 'div', content: [{
+          tag: 'dt', content: [
+            { tag: 'strong', content: [{ tag: 'code', content: 'type' }]},
+            { content: ' ' },
+            { tag: 'code', content: [{
+              content: [{ tag: 'a', content: 'FormType', link: '#formtype' }]
+            }]},
+            { content: ' ' },
+            { content: 'required' }
+          ]
+        },
+        { tag: 'dd', content: [] }
+      ]}]},
+      { tag: 'h2', content: 'Returns' },
+      { tag: 'p', content: [{
+        tag: 'code', content: [{ content: 'string' }]
+      }]},
+      { tag: 'h2', content: 'Types' },
+      { tag: 'h3', content: 'FormType' },
+      { tag: 'p', content: [
+        { tag: 'strong', content: 'Type:' },
+        { content: ' ' },
+        { tag: 'code', content: [{
+          content: [{ content: '&#39;a&#39; | &#39;b&#39; | &#39;c&#39;' }]
+        }]}
+      ]}
+    ]
+  } 
+}

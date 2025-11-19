@@ -1,0 +1,67 @@
+{
+  "name": "@alanizcreative/formation-docs",
+  "version": "0.0.0",
+  "description": "Utility to generate docs from JSDoc comments in TypeScript or JavaScript files",
+  "main": "./lib/docs.js",
+  "packageManager": "pnpm@10.22.0",
+  "type": "module",
+  "files": [
+    "./lib"
+  ],
+  "exports": {
+    "./*": {
+      "import": "./lib/*"
+    }
+  },
+  "scripts": {
+    "build": "npx tsc --project tsconfig.build.json && pnpm minify",
+    "minify": "find lib -name \"*.js\" -exec terser {} -o {} --compress \\;",
+    "lint": "npx eslint .",
+    "test": "vitest --run --reporter verbose --coverage",
+    "release": "release-it"
+  },
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/galaniz/formation-docs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/galaniz/formation-docs/issues"
+  },
+  "homepage": "https://github.com/galaniz/formation-docs#readme",
+  "author": "Graciela Alaniz (https://alanizcreative.com/)",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "@typescript-eslint/eslint-plugin": "8.47.0",
+    "@typescript-eslint/parser": "8.47.0",
+    "@vitest/coverage-v8": "^4.0.10",
+    "eslint": "^9.39.1",
+    "jsdoc-api": "^9.3.5",
+    "release-it": "^19.0.6",
+    "terser": "5.44.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "8.47.0",
+    "vitest": "^4.0.10"
+  },
+  "release-it": {
+    "git": {
+      "requireCommits": true,
+      "commitMessage": "chore: release ${version} [ci skip]"
+    },
+    "github": {
+      "release": true
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@shikijs/transformers": "3.15.0",
+    "glob": "12.0.0",
+    "shiki": "3.15.0"
+  }
+}
