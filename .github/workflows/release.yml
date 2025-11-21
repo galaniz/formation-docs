@@ -1,0 +1,47 @@
+name: Publish Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish-release:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Set GitHub user
+      - name: Set GitHub user
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+
+      # Install PNPM
+      - name: Install PNPM
+        uses: pnpm/action-setup@v4
+
+      # Set up Node.js for PNPM
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      # NPM authentication
+      - name: Set NPM auth token
+        run: pnpm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+
+      # Install PNPM dependencies
+      - name: Install dependencies
+        run: pnpm install
+
+      # Build lib files
+      - name: Build project
+        run: pnpm build
+
+      # Release
+      - name: Publish release
+        run: pnpm release
