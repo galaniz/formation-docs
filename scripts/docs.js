@@ -12,10 +12,7 @@ import { renderMarkdownDocs } from '../lib/docs.js'
 
 await renderMarkdownDocs({
   include: 'src/**\/*.ts',
-  exclude: [
-    'src/**\/*.test.ts',
-    'src/**\/*Mock.ts'
-  ],
+  exclude: 'src/**\/*.test.ts',
   docsExclude: 'src/**\/*Types.ts'
 })
 
@@ -23,10 +20,7 @@ await renderMarkdownDocs({
 await renderHtmlDocs({
   outDir: 'docs',
   include: 'src/**\/*.ts',
-  exclude: [
-    'src/**\/*.test.ts',
-    'src/**\/*Mock.ts'
-  ],
+  exclude: 'src/**\/*.test.ts',
   docsExclude: 'src/**\/*Types.ts',
   classPrefix: 'frm-',
   themes: {

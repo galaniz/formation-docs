@@ -28,10 +28,12 @@ jobs:
       - name: Install PNPM dependencies
         run: pnpm install --frozen-lockfile
 
-      # Lint TS files
+      # Lint files
       - name: Lint files
         run: pnpm lint
 
-      # Test TS files
+      # Test files
       - name: Test files
         run: pnpm test
+        env:
+          TEMP: ${{ runner.temp }} # Use GitHub's temp directory
