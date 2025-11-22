@@ -18,7 +18,7 @@
     "minify": "find lib -name \"*.js\" -exec terser {} -o {} --compress \\;",
     "lint": "npx eslint .",
     "test": "vitest --run --reporter verbose --coverage",
-    "release": "release-it --no-npm"
+    "release": "release-it 0.0.1"
   },
   "keywords": [
     "jsdoc",
@@ -60,10 +60,15 @@
   "release-it": {
     "git": {
       "requireCommits": false,
-      "commitMessage": "chore: release ${version} [ci skip]"
+      "commitMessage": "chore: release ${version} [ci skip]",
+      "tag": false,
+      "push": false
     },
     "github": {
       "release": true
+    },
+    "npm": {
+      "publish": false
     }
   },
   "publishConfig": {
