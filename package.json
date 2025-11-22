@@ -59,16 +59,16 @@
   },
   "release-it": {
     "git": {
-      "requireCommits": false,
+      "requireCommits": true,
       "commitMessage": "chore: release ${version} [ci skip]",
-      "tag": false,
-      "push": false
+      "tag": true,
+      "push": true
     },
     "github": {
-      "release": false
+      "release": true
     },
     "npm": {
-      "publish": false
+      "publish": true
     }
   },
   "publishConfig": {
