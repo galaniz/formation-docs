@@ -59,7 +59,7 @@
   },
   "release-it": {
     "git": {
-      "requireCommits": true,
+      "requireCommits": false,
       "commitMessage": "chore: release ${version} [ci skip]"
     },
     "github": {
