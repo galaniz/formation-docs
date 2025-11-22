@@ -3,7 +3,7 @@
  *
  * @file
  * title: Formation Docs
- * A utility to generate Markdown or HTML documentation files from JSDoc comments in JavaScript or TypeScript files.
+ * Utilities to generate Markdown or HTML documentation files from JSDoc comments in JavaScript or TypeScript files.
  *
  * @example
  * title: Installation

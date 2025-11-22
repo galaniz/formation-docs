@@ -1,7 +1,7 @@
 {
   "name": "@alanizcreative/formation-docs",
   "version": "0.0.0",
-  "description": "Utility to generate docs from JSDoc comments in TypeScript or JavaScript files",
+  "description": "Utilities to generate docs from JSDoc comments in TypeScript or JavaScript files",
   "main": "./lib/docs.js",
   "packageManager": "pnpm@10.22.0",
   "type": "module",
