@@ -1,4 +1,4 @@
-name: Lint and Test
+name: Lint Test
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  lint-and-test:
+  lint-test:
     runs-on: ubuntu-latest
     steps:
       # Checkout the repository
