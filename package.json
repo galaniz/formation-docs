@@ -1,6 +1,6 @@
 {
   "name": "@alanizcreative/formation-docs",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Utilities to generate docs from JSDoc comments in TypeScript or JavaScript files",
   "main": "./lib/docs.js",
   "packageManager": "pnpm@10.22.0",
@@ -18,7 +18,7 @@
     "minify": "find lib -name \"*.js\" -exec terser {} -o {} --compress \\;",
     "lint": "npx eslint .",
     "test": "vitest --run --reporter verbose --coverage",
-    "release": "release-it 0.0.1"
+    "release": "release-it"
   },
   "keywords": [
     "jsdoc",
@@ -65,7 +65,7 @@
       "push": false
     },
     "github": {
-      "release": true
+      "release": false
     },
     "npm": {
       "publish": false
