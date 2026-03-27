@@ -21,7 +21,7 @@ Rich text objects from source code and JSDoc explain.
 
 <code>Promise&lt;<a href="#docsresult">DocsResult</a>&gt;</code>
 
-### Examples
+### Example
 
 ```ts
 // src/button/button.ts
@@ -56,10 +56,10 @@ export type FormType = 'a' | 'b' | 'c'
 import { getDocs } from '@alanizcreative/formation-docs/docs.js'
 
 const result = await getDocs({
-  include: 'src/**\/*.ts',
-  exclude: 'src/**\/*.test.ts',
-  docsInclude: 'src/form/**\/*.ts',
-  docsExclude: 'src/**\/*Types.ts'
+  include: 'src/**/*.ts',
+  exclude: 'src/**/*.test.ts',
+  docsInclude: 'src/form/**/*.ts',
+  docsExclude: 'src/**/*Types.ts'
 })
 
 result = {
@@ -122,7 +122,7 @@ Output normalized JSDoc data as Markdown files.
 
 <code>Promise&lt;void&gt;</code>
 
-### Examples
+### Example
 
 ```js
 import { renderMarkdownDocs } from '@alanizcreative/formation-docs/docs.js'
@@ -159,7 +159,7 @@ Output normalized JSDoc data as HTML files.
 
 <code>Promise&lt;void&gt;</code>
 
-### Examples
+### Example
 
 ```js
 import { renderHtmlDocs } from '@alanizcreative/formation-docs/docs.js'
@@ -213,10 +213,10 @@ Default: `src`
 Directory to write documentation files to.  
 - **`url`** <code>string</code> optional  
 Repository URL for Markdown docs or site URL for HTML docs.  
-- **`index`** <code>string</code> optional  
-Comments representing index documentation page.  
+- **`root`** <code>string</code> optional  
+Comments representing root documentation page.  
 - **`filterTitle`** <code><a href="#docsfiltertitle">DocsFilterTitle</a></code> optional  
-Customize title for multi file directories.
+Customize generated directory or reference titles.
 
 ### DocsContent  
 
