@@ -33,7 +33,7 @@ import type {
   DocsAll,
   DocsAllPartial,
   DocsFilterAttr,
-  DocsIndexItem,
+  DocsReferenceItem,
   DocsNavigationItem,
   DocsHeading,
   DocsHeadingsRef
@@ -246,7 +246,7 @@ const normalizeExamples = async (
   for (const example of examples) {
     const regex = /^(?:title:\s*(.+?)\n)?(?:desc:\s*(.+?)\n)?(?:(shell|json|javascript|typescript|js|ts):\s*)?([\s\S]*)$/
     const match = example.match(regex) as RegExpMatchArray // Cast as regex always matches
-    const title = match[1]
+    const title = match[1] || 'Example'
     const desc = match[2]
     const lang = match[3]
     let code = match[4] // Captures remaining content
@@ -255,16 +255,16 @@ const normalizeExamples = async (
       code = await readFile(resolve(dir, code), 'utf8')
     }
 
-    let newExample = ''
-
-    if (title) {
-      newExample += (tagToSymbol[tag]).replace('\n', '') + title + '\n'
-
-      newContent.push({
-        content: title,
-        tag
-      })
+    if (!lang || !code) {
+      continue
     }
+
+    let newExample = (tagToSymbol[tag]).replace('\n', '') + title + '\n'
+
+    newContent.push({
+      content: title,
+      tag
+    })
 
     if (desc) {
       newExample += '\n' + desc + '\n'
@@ -275,25 +275,19 @@ const normalizeExamples = async (
       })
     }
 
-    if (lang && code) {
-      newExample += '\n' + '```' + lang + '\n' + code + '\n' + '```'
+    newExample += '\n' + '```' + lang + '\n' + code + '\n' + '```'
 
-      if (isHtml) {
-        const shikiArgs: CodeToHastOptions = {
-          lang,
-          defaultColor: false,
-          transformers: [shikiOptions.toClass],
-          themes: shikiOptions.themes
-        }
-
-        const content = await codeToHtml(code, shikiArgs)
-
-        newContent.push({ content })
+    if (isHtml) {
+      const shikiArgs: CodeToHastOptions = {
+        lang,
+        defaultColor: false,
+        transformers: [shikiOptions.toClass],
+        themes: shikiOptions.themes
       }
-    }
 
-    if (!newExample) {
-      continue
+      const content = await codeToHtml(code, shikiArgs)
+
+      newContent.push({ content })
     }
 
     newExamples.push(newExample)
@@ -881,16 +875,11 @@ const getTypeContent = async (
   }
 
   if (examples) {
-    const examplesContent = await normalizeExamples(examples, dir, `h${depth + 3}` as DocsTag)
+    const examplesContent = await normalizeExamples(examples, dir, `h${depth + 2}` as DocsTag)
 
     if (!examplesContent) {
       return _content
     }
-
-    _content.push({
-      tag: `h${depth + 2}`,
-      content: 'Examples'
-    })
 
     _content.push({
       content: examplesContent
@@ -1264,9 +1253,13 @@ const getDocs = async (args: DocsArgs): Promise<DocsResult> => {
     url = '',
     srcDir = 'src',
     outDir,
-    index,
+    root,
     filterTitle
   } = args
+
+  /* Filter */
+
+  const hasFilter = typeof filterTitle === 'function'
 
   /* Result */
 
@@ -1364,12 +1357,12 @@ const getDocs = async (args: DocsArgs): Promise<DocsResult> => {
     exports.set(dir, allDocItems.filter(item => item.meta?.code?.name?.includes('export')).length)
   }
 
-  /* Index info */
+  /* Root info */
 
-  const indexMap: Map<string, DocsIndexItem[]> = new Map()
+  const referenceMap: Map<string, [string, DocsReferenceItem[]]> = new Map()
 
-  if (index) {
-    sources.set(srcDir, await jsdoc.explain({ source: index }) as DocsJsDocItem[])
+  if (root) {
+    sources.set(srcDir, await jsdoc.explain({ source: root }) as DocsJsDocItem[])
   }
 
   /* Normalize JSDoc types from all sources */
@@ -1455,12 +1448,12 @@ const getDocs = async (args: DocsArgs): Promise<DocsResult> => {
     const usedClasses: Set<string> = new Set()
     const usedFunctions: Set<string> = new Set()
     const single = exports.get(dir) === 1
-    const isIndex = dir === srcDir && !!index
+    const isRoot = dir === srcDir && !!root
 
     let title: string | undefined
     let desc: string | undefined
     let guide: DocsContent[] | string = ''
-    let hasIndex = false
+    let hasReference = false
 
     for (const item of dirDocItems) {
       const { name, kind, description, examples, access, undocumented, tags } = item
@@ -1469,8 +1462,8 @@ const getDocs = async (args: DocsArgs): Promise<DocsResult> => {
         continue
       }
 
-      if (isIndex && tags && tags[0]?.title === 'index') {
-        hasIndex = true
+      if (isRoot && tags && tags[0]?.title === 'reference') {
+        hasReference = true
       }
 
       if (kind === 'file') {
@@ -1529,7 +1522,7 @@ const getDocs = async (args: DocsArgs): Promise<DocsResult> => {
     const hasClasses = classes.length > 0
     const hasFunctions = functions.length > 0
 
-    if (!hasVars && !hasTypes && !hasClasses && !hasFunctions && !isIndex) {
+    if (!hasVars && !hasTypes && !hasClasses && !hasFunctions && !isRoot) {
       continue
     }
 
@@ -1542,7 +1535,7 @@ const getDocs = async (args: DocsArgs): Promise<DocsResult> => {
 
     const dirBase = basename(dir.replace(srcDir, ''))
     const dirTitleCase = titleCase(dirBase)
-    const dirTitle = (!single || !isIndex) && typeof filterTitle === 'function' ? filterTitle(dirTitleCase, dirBase) : dirTitleCase
+    const dirTitle = hasFilter ? filterTitle(dirTitleCase, dirBase) : dirTitleCase
     const guides: DocsContent[] = []
 
     if (!single) {
@@ -1563,34 +1556,34 @@ const getDocs = async (args: DocsArgs): Promise<DocsResult> => {
       })
     }
 
-    if (isIndex && hasIndex && indexMap.size) {
+    if (isRoot && hasReference && referenceMap.size) {
       guides.push({
         tag: 'h2',
-        content: 'Index'
+        content: 'Reference'
       })
 
-      const orderedKeys = [...indexMap.keys()].sort()
+      const orderedKeys = [...referenceMap.keys()].sort()
 
       orderedKeys.forEach(key => {
-        const values = indexMap.get(key) as DocsIndexItem[] // Cast as map size indicates values exist
+        const [summaryTitle, list] = referenceMap.get(key) as [string, DocsReferenceItem[]] // Cast as map size indicates values exist
 
         guides.push({
           tag: 'details',
           content: [
             {
               tag: 'summary',
-              content: titleCase(key)
+              content: summaryTitle
             },
             {
               tag: 'ul',
-              content: values.sort((a, b) => a.title.localeCompare(b.title)).map(value => {
+              content: list.sort((a, b) => a.title.localeCompare(b.title)).map(item => {
                 return {
                   tag: 'li',
                   content: [
                     {
                       tag: 'a',
-                      content: value.title,
-                      link: value.link
+                      content: item.title,
+                      link: item.link
                     }
                   ]
                 }
@@ -1601,14 +1594,16 @@ const getDocs = async (args: DocsArgs): Promise<DocsResult> => {
       })
     }
 
-    if (!isIndex) {
-      const sectionDir = dir.replace(`${srcDir}/`, '').split('/')[0] || ''
+    if (!isRoot) {
+      const sectionDirBase = dir.replace(`${srcDir}/`, '').split('/')[0] || ''
+      const sectionDirTitleCase = titleCase(sectionDirBase)
+      const sectionDirTitle = hasFilter ? filterTitle(sectionDirTitleCase, sectionDirBase) : dirTitleCase
 
-      if (!indexMap.has(sectionDir)) {
-        indexMap.set(sectionDir, [])
+      if (!referenceMap.has(sectionDirBase)) {
+        referenceMap.set(sectionDirBase, [sectionDirTitle, []])
       }
 
-      indexMap.get(sectionDir)?.push({
+      referenceMap.get(sectionDirBase)?.[1]?.push({
         title: dirTitle,
         link: `${url}/${outDir ? dir.replace(`${srcDir}/`, '') : dir}/${renderType.ref === 'markdown' ? 'README.md' : ''}`
       })

@@ -32,7 +32,7 @@ interface TestFilesResult {
 let tempDir: string
 let srcDir: string
 let outDir: string
-let index: string
+let root: string
 
 beforeAll(async () => {
   const markdownDesc = '**Test** `param` *description* with [Link](https://test.docs).'
@@ -41,19 +41,19 @@ beforeAll(async () => {
   tempDir = await mkdtemp(join(process.env.TEMP || tmpdir(), 'test-'))
   srcDir = join(tempDir, 'src')
   outDir = join(tempDir, 'docs')
-  index = /* js */`
+  root = /* js */`
   /**
-   * Test Index
+   * Test Root
    *
    * @file
-   * title: Test index title
-   * Test index description.
+   * title: Test root title
+   * Test root description.
    *
    * @example
    * title: Installation
    * shell: npm install -D @test/test
    *
-   * @index
+   * @reference
    */
   `
 
@@ -430,10 +430,10 @@ const testFilePaths = async function * (dir: string): AsyncGenerator<string> {
  * @type {Object<string, string>}
  */
 const testReadMe: Record<string, string> = {
-/* Index */
-'/README.md': `# Test index title  
+/* Root */
+'/README.md': `# Test root title  
 
-Test index description.
+Test root description.
 
 ## Installation
 
@@ -441,7 +441,7 @@ Test index description.
 npm install -D @test/test
 \`\`\`
 
-## Index
+## Reference
 <details>
 <summary>Test</summary>
   
@@ -459,7 +459,7 @@ Test let description.
 
 **Type:** <code><a href="#testlet">TestLet</a></code>
 
-### Examples
+### Example
 
 \`\`\`js
 TestLet.lorem = 'string'
@@ -534,9 +534,7 @@ Default: \`false\`
 
 <code>string | string[] | null</code> - Test return description.
 
-### Examples
-
-#### Test function two example
+### Test function two example
 
 Test function two example description.
 
@@ -632,9 +630,7 @@ Test class method.
 
 <code><a href="%url%/%temp_dir%/src/test/README.md#testobj">TestObj</a> | undefined</code>
 
-## Examples
-
-### Test class example
+## Test class example
 
 \`\`\`js
 import { TestClass } from '@test/testClass.js'
@@ -656,15 +652,15 @@ const testHtml: Record<string, string> = {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Test index title</title>
+<title>Test root title</title>
 <style></style>
 </head>
 <body>
-<h1 id="test-index-title">Test index title<a href="#test-index-title" aria-label="Permalink: Test index title">#</a></h1>
-<p>Test index description.</p>
+<h1 id="test-root-title">Test root title<a href="#test-root-title" aria-label="Permalink: Test root title">#</a></h1>
+<p>Test root description.</p>
 <h2 id="installation"%h2_attr%>Installation<a href="#installation" aria-label="Permalink: Installation"%a_attr%>#</a></h2>
 <pre tabindex="0"><code><span><span>npm</span><span> install</span><span> -D</span><span> @test/test</span></span></code></pre>
-<h2 id="index"%h2_attr%>Index<a href="#index" aria-label="Permalink: Index"%a_attr%>#</a></h2>
+<h2 id="reference"%h2_attr%>Reference<a href="#reference" aria-label="Permalink: Reference"%a_attr%>#</a></h2>
 <details>
 <summary>Test</summary>
 <ul>
@@ -688,7 +684,7 @@ const testHtml: Record<string, string> = {
 <h2 id="testlet"%h2_attr%>TestLet<a href="#testlet" aria-label="Permalink: TestLet"%a_attr%>#</a></h2>
 <p>Test let description.</p>
 <p><strong>Type:</strong> <code><a href="#testlet">TestLet</a></code></p>
-<h3 id="examples">Examples<a href="#examples" aria-label="Permalink: Examples">#</a></h3>
+<h3 id="example">Example<a href="#example" aria-label="Permalink: Example">#</a></h3>
 <pre tabindex="0"><code><span><span>TestLet</span><span>.</span><span>lorem</span><span> =</span><span> '</span><span>string</span><span>'</span></span>
 <span><span>TestLet</span><span>.</span><span>ipsum</span><span> =</span><span> '</span><span>string</span><span>'</span></span></code></pre>
 <h2 id="testbaseclass"%h2_attr%>TestBaseClass<a href="#testbaseclass" aria-label="Permalink: TestBaseClass"%a_attr%>#</a></h2>
@@ -743,8 +739,7 @@ const testHtml: Record<string, string> = {
 </dl>
 <h3 id="returns-1">Returns<a href="#returns-1" aria-label="Permalink: Returns">#</a></h3>
 <p><code>string | string[] | null</code> - Test return description.</p>
-<h3 id="examples-1">Examples<a href="#examples-1" aria-label="Permalink: Examples">#</a></h3>
-<h4 id="test-function-two-example">Test function two example<a href="#test-function-two-example" aria-label="Permalink: Test function two example">#</a></h4>
+<h3 id="test-function-two-example">Test function two example<a href="#test-function-two-example" aria-label="Permalink: Test function two example">#</a></h3>
 <p>Test function two example description.</p>
 <pre tabindex="0"><code><span><span>import</span><span> {</span><span> TestFuncTwo</span><span> }</span><span> from</span><span> '</span><span>@test/test.js</span><span>'</span></span>
 <span></span>
@@ -828,8 +823,7 @@ const testHtml: Record<string, string> = {
 </dl>
 <h4 id="returns-1">Returns<a href="#returns-1" aria-label="Permalink: Returns">#</a></h4>
 <p><code><a href="%url%/test/#testobj">TestObj</a> | undefined</code></p>
-<h2 id="examples"%h2_attr%>Examples<a href="#examples" aria-label="Permalink: Examples"%a_attr%>#</a></h2>
-<h3 id="test-class-example">Test class example<a href="#test-class-example" aria-label="Permalink: Test class example">#</a></h3>
+<h2 id="test-class-example"%h2_attr%>Test class example<a href="#test-class-example" aria-label="Permalink: Test class example"%a_attr%>#</a></h2>
 <pre tabindex="0"><code><span><span>import</span><span> {</span><span> TestClass</span><span> }</span><span> from</span><span> '</span><span>@test/testClass.js</span><span>'</span></span>
 <span></span>
 <span><span>const</span><span> test</span><span> =</span><span> new</span><span> TestClass</span><span>({</span></span>
@@ -858,13 +852,13 @@ const testHtml: Record<string, string> = {
 /* Test renderMarkdownDocs */
 
 describe('renderMarkdownDocs()', () => {
-  it('should create index, test, class and const README files', async () => {
+  it('should create root, test, class and const README files', async () => {
     await renderMarkdownDocs({
       srcDir,
       include: `${srcDir}/**/*.ts`,
       exclude: `${srcDir}/**/*.test.ts`,
       docsExclude: `${srcDir}/**/*Types.ts`,
-      index
+      root
     })
 
     const { files, contents } = await testFiles('markdown')
@@ -883,13 +877,13 @@ describe('renderMarkdownDocs()', () => {
     expect(contents).toEqual(expectedContents)
   })
 
-  it('should create index, test, class, const and type README files', async () => {
+  it('should create root, test, class, const and type README files', async () => {
     await renderMarkdownDocs({
       srcDir,
       include: `${srcDir}/**/*.ts`,
       exclude: `${srcDir}/**/*.test.ts`,
       docsTypes: `${srcDir}/**/*Types.ts`,
-      index
+      root
     })
 
     const { files, contents } = await testFiles('markdown')
@@ -902,9 +896,9 @@ describe('renderMarkdownDocs()', () => {
     ]
 
     const expectedReadMe: Record<string, string> = {
-      '/README.md': `# Test index title  
+      '/README.md': `# Test root title  
 
-Test index description.
+Test root description.
 
 ## Installation
 
@@ -912,7 +906,7 @@ Test index description.
 npm install -D @test/test
 \`\`\`
 
-## Index
+## Reference
 <details>
 <summary>Global</summary>
   
@@ -942,7 +936,7 @@ Test let description.
 
 **Type:** <code><a href="#testlet">TestLet</a></code>
 
-### Examples
+### Example
 
 \`\`\`js
 TestLet.lorem = 'string'
@@ -1017,9 +1011,7 @@ Default: \`false\`
 
 <code>string | string[] | null</code> - Test return description.
 
-### Examples
-
-#### Test function two example
+### Test function two example
 
 Test function two example description.
 
@@ -1109,7 +1101,7 @@ Default: \`0\`
     expect(files).toEqual([])
   })
 
-  it('should create index README file from JS source', async () => {
+  it('should create root README file from JS source', async () => {
     await renderMarkdownDocs({
       srcDir,
       include: `${srcDir}/**/*.js`
@@ -1224,7 +1216,7 @@ Test base initialize state.
 /* Test renderHtmlDocs */
 
 describe('renderHtmlDocs()', () => {
-  it('should create index, test, class and const HTML files', async () => {
+  it('should create root, test, class and const HTML files', async () => {
     await renderHtmlDocs({
       srcDir,
       outDir,
@@ -1235,7 +1227,7 @@ describe('renderHtmlDocs()', () => {
       themes: {
         black: 'vitesse-black'
       },
-      index
+      root
     })
 
     const { files, contents, styles, preClasses, spanClasses } = await testFiles('html')
@@ -1262,7 +1254,7 @@ describe('renderHtmlDocs()', () => {
     expect(spanClasses.some(spanClass => spanClass.includes('frm-'))).toBe(true)
   })
 
-  it('should create index without map and const HTML files', async () => {
+  it('should create root without map and const HTML files', async () => {
     const titles: string[] = []
     const dirs: string[] = []
 
@@ -1277,14 +1269,14 @@ describe('renderHtmlDocs()', () => {
         dirs.push(dir)
 
         if (title === '') {
-          return 'Index'
+          return 'Root'
         }
 
         return title
       },
-      index: `
+      root: `
       /**
-       * Test Index
+       * Test Root
        *
        * @file
        */
@@ -1302,12 +1294,12 @@ describe('renderHtmlDocs()', () => {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Index</title>
+<title>Root</title>
 <style></style>
 </head>
 <body>
-<h1 id="index">Index<a href="#index" aria-label="Permalink: Index">#</a></h1>
-<p>Test Index</p>
+<h1 id="root">Root<a href="#root" aria-label="Permalink: Root">#</a></h1>
+<p>Test Root</p>
 </body>
 </html>
 `,
@@ -1338,8 +1330,105 @@ describe('renderHtmlDocs()', () => {
 
     expect(files).toEqual(expectedFiles)
     expect(contents).toEqual(expectedContents)
-    expect(titles).toEqual(['Const', ''])
-    expect(dirs).toEqual(['const', ''])
+    expect(titles).toEqual(['Const', 'Test', ''])
+    expect(dirs).toEqual(['const', 'test', ''])
+  })
+
+  it('should create root map and const HTML files', async () => {
+    const titles: string[] = []
+    const dirs: string[] = []
+
+    await renderHtmlDocs({
+      srcDir,
+      outDir,
+      include: `${srcDir}/test/const/TestConst.ts`,
+      exclude: `${srcDir}/**/*.test.ts`,
+      docsExclude: `${srcDir}/**/*Types.ts`,
+      filterTitle (title, dir) {
+        titles.push(title)
+        dirs.push(dir)
+
+        if (title === 'Test') {
+          return 'Sed'
+        }
+
+        if (title === 'Const') {
+          return 'Quisque'
+        }
+
+        if (title === '') {
+          return 'Root'
+        }
+
+        return title
+      },
+      root: `
+      /**
+       * Test Root
+       *
+       * @file
+       *
+       * @reference
+       */
+      `
+    })
+
+    const { files, contents } = await testFiles('html')
+    const expectedFiles = [
+      '/docs/index.html',
+      '/docs/test/const/index.html'
+    ]
+
+    const expectedHtml: Record<string, string> = {
+      '/docs/index.html': `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Root</title>
+<style></style>
+</head>
+<body>
+<h1 id="root">Root<a href="#root" aria-label="Permalink: Root">#</a></h1>
+<p>Test Root</p>
+<h2 id="reference"%h2_attr%>Reference<a href="#reference" aria-label="Permalink: Reference"%a_attr%>#</a></h2>
+<details>
+<summary>Sed</summary>
+<ul>
+<li><a href="%url%/test/const/">Quisque</a></li>
+</ul>
+</details>
+</body>
+</html>
+`,
+      '/docs/test/const/index.html': `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>TestConst</title>
+<style></style>
+</head>
+<body>
+<h1 id="testconst">TestConst<a href="#testconst" aria-label="Permalink: TestConst">#</a></h1>
+<p>Test const description.</p>
+<p><strong>Type:</strong> <code>TestConst</code></p>
+</body>
+</html>
+      `
+    }
+
+    const expectedContents = expectedFiles.map(
+      file => expectedHtml[file]
+        ?.replace(/%url%/g, '')
+        .replace(/%h2_attr%/g, '')
+        .replace(/%a_attr%/g, '')
+        .replace(/\n/g, '')
+        .trim()
+    )
+
+    expect(files).toEqual(expectedFiles)
+    expect(contents).toEqual(expectedContents)
+    expect(titles).toEqual(['Const', 'Test', ''])
+    expect(dirs).toEqual(['const', 'test', ''])
   })
 
   it('should create test, class and const HTML files with filtered output and docs URL', async () => {
@@ -1399,8 +1488,8 @@ describe('renderHtmlDocs()', () => {
         {
           children: [
             {
-              id: 'examples',
-              title: 'Examples',
+              id: 'example',
+              title: 'Example',
               tag: 'h3'
             }
           ],
@@ -1491,15 +1580,8 @@ describe('renderHtmlDocs()', () => {
               tag: 'h3'
             },
             {
-              children: [
-                {
-                  id: 'test-function-two-example',
-                  title: 'Test function two example',
-                  tag: 'h4'
-                }
-              ],
-              id: 'examples-1',
-              title: 'Examples',
+              id: 'test-function-two-example',
+              title: 'Test function two example',
               tag: 'h3'
             }
           ],
@@ -1607,15 +1689,8 @@ describe('renderHtmlDocs()', () => {
           tag: 'h2'
         },
         {
-          children: [
-            {
-              id: 'test-class-example',
-              title: 'Test class example',
-              tag: 'h3'
-            }
-          ],
-          id: 'examples',
-          title: 'Examples',
+          id: 'test-class-example',
+          title: 'Test class example',
           tag: 'h2'
         }
       ]

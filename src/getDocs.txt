@@ -30,10 +30,10 @@ export type FormType = 'a' | 'b' | 'c'
 import { getDocs } from '@alanizcreative/formation-docs/docs.js'
 
 const result = await getDocs({
-  include: 'src/**\/*.ts',
-  exclude: 'src/**\/*.test.ts',
-  docsInclude: 'src/form/**\/*.ts',
-  docsExclude: 'src/**\/*Types.ts'
+  include: 'src/**/*.ts',
+  exclude: 'src/**/*.test.ts',
+  docsInclude: 'src/form/**/*.ts',
+  docsExclude: 'src/**/*Types.ts'
 })
 
 result = {
