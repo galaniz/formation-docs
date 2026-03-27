@@ -290,11 +290,11 @@ export interface DocsContent {
 export type DocsResult = Record<string, DocsContent>
 
 /**
- * @typedef {object} DocsIndexItem
+ * @typedef {object} DocsReferenceItem
  * @prop {string} title
  * @prop {string} link
  */
-export interface DocsIndexItem {
+export interface DocsReferenceItem {
   title: string
   link: string
 }
@@ -386,8 +386,8 @@ export type DocsFilterTitle = (title: string, dir: string) => string
  * @prop {string} [srcDir=src] - Source directory of input files.
  * @prop {string} [outDir] - Directory to write documentation files to.
  * @prop {string} [url] - Repository URL for Markdown docs or site URL for HTML docs.
- * @prop {string} [index] - Comments representing index documentation page.
- * @prop {DocsFilterTitle} [filterTitle] - Customize title for multi file directories.
+ * @prop {string} [root] - Comments representing root documentation page.
+ * @prop {DocsFilterTitle} [filterTitle] - Customize generated directory or reference titles.
  */
 export interface DocsArgs {
   include: string | string[]
@@ -398,7 +398,7 @@ export interface DocsArgs {
   srcDir?: string
   outDir?: string
   url?: string
-  index?: string
+  root?: string
   filterTitle?: DocsFilterTitle
 }
 
