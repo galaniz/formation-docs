@@ -4,8 +4,6 @@
  * Scripts - Docs
  */
 
-/* Imports */
-
 import { renderMarkdownDocs } from '../lib/docs.js'
 
 /* Create README */

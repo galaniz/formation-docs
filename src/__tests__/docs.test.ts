@@ -2,8 +2,6 @@
  * Docs - Tests
  */
 
-/* Imports */
-
 import type { DocsHeading, DocsNavigationItem } from '../docsTypes.js'
 import { it, describe, expect, afterEach, beforeAll, afterAll } from 'vitest'
 import { rm, mkdtemp, mkdir, writeFile, readFile, readdir } from 'node:fs/promises'
@@ -139,8 +137,6 @@ beforeAll(async () => {
      */
     const TestConst: TestConst = 10
 
-    /* Exports */
-
     export { TestConst }
   `)
 
@@ -156,8 +152,6 @@ beforeAll(async () => {
       lorem: 'dolorem',
       ipsum: 'sed'
     }
-
-    /* Exports */
 
     export { TestLet }
   `)
@@ -194,8 +188,6 @@ beforeAll(async () => {
       return ''
     }
 
-    /* Exports */
-
     export { TestFuncOne, TestFuncTwo }
   `)
 
@@ -219,8 +211,6 @@ beforeAll(async () => {
       yield i + 20
     }
 
-    /* Exports */
-
     export { TestGenOne, TestGenTwo }
   `)
 
@@ -241,14 +231,10 @@ beforeAll(async () => {
       }
     }
 
-    /* Exports */
-
     export { TestBaseClass }
   `)
 
   await writeFile(`${srcDir}/test/class/TestClass.ts`, /* js */`
-    /* Imports */
-
     import { TestBaseClass } from '../TestBaseClass.js'
 
     /**
@@ -308,8 +294,6 @@ beforeAll(async () => {
       }
     }
 
-    /* Exports */
-
     export { TestClass }
   `)
 
@@ -322,8 +306,6 @@ beforeAll(async () => {
     const TestJs = () => {
       return 1 + 1
     }
-
-    /* Exports */
 
     export { TestJs }
   `)
@@ -1142,8 +1124,6 @@ Test JS description.
        * @return {string}
        */
       const testMock = (str) => str
-
-      /* Exports */
       
       export { testMock }
     `)

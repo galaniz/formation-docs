@@ -10,8 +10,6 @@
  * shell: npm install -D @alanizcreative/formation-docs
  */
 
-/* Imports */
-
 import type {
   DocsRenderType,
   DocsShikiOptions,
@@ -197,7 +195,8 @@ const normalizeParams = (params: DocsJsDocType[]): DocsType[] => {
     }
 
     if (defaultvalue !== undefined) {
-      docType.defaults = String(defaultvalue as number) // Cast for defaults like null, 0, false
+      // eslint-disable-next-line @typescript-eslint/no-base-to-string
+      docType.defaults = String(defaultvalue) // Defaults like null, 0, false
     }
 
     return docType
@@ -1597,7 +1596,7 @@ const getDocs = async (args: DocsArgs): Promise<DocsResult> => {
     if (!isRoot) {
       const sectionDirBase = dir.replace(`${srcDir}/`, '').split('/')[0] || ''
       const sectionDirTitleCase = titleCase(sectionDirBase)
-      const sectionDirTitle = hasFilter ? filterTitle(sectionDirTitleCase, sectionDirBase) : dirTitleCase
+      const sectionDirTitle = hasFilter ? filterTitle(sectionDirTitleCase, sectionDirBase) : sectionDirTitleCase
 
       if (!referenceMap.has(sectionDirBase)) {
         referenceMap.set(sectionDirBase, [sectionDirTitle, []])
@@ -1809,8 +1808,6 @@ const renderHtmlDocs = async (args: DocsHtmlArgs): Promise<void> => {
     await writeFile(path, newOutput)
   }
 }
-
-/* Exports */
 
 export {
   getDocs,

@@ -2,8 +2,6 @@
  * Docs - Types
  */
 
-/* Imports */
-
 import type { ShikiTransformerStyleToClass } from '@shikijs/transformers'
 
 /**
