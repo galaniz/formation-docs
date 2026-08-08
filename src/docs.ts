@@ -1332,6 +1332,13 @@ const getDocs = async (args: DocsArgs): Promise<DocsResult> => {
 
     const docItems = await jsdoc.explain({ source: output }) as DocsJsDocItem[]
     const newDocItems = docItems.map(docItem => {
+      if (docItem.kind === 'class' && docItem.name === 'exports') {
+        const defaultExportName = basename(file, ext) // Fallback to file name when default export
+
+        docItem.name = defaultExportName
+        docItem.longname = defaultExportName
+      }
+
       docItem.meta = {
         ...docItem.meta,
         filename: dir
