@@ -254,6 +254,9 @@ const normalizeExamples = async (
       code = await readFile(resolve(dir, code), 'utf8')
     }
 
+    // Unescape `*\/` back to `*/`, needed in source so it doesn't close the JSDoc block comment early
+    code = code?.replace(/\*\\\//g, '*/')
+
     if (!lang || !code) {
       continue
     }
@@ -286,7 +289,7 @@ const normalizeExamples = async (
 
       const content = await codeToHtml(code, shikiArgs)
 
-      newContent.push({ content })
+      newContent.push({ content, raw: true })
     }
 
     newExamples.push(newExample)
@@ -1108,7 +1111,7 @@ const getHtml = (
   _output: DocsOutputRef = { ref: '' },
   _ids: Set<string> = new Set()
 ): string => {
-  const { content, tag, link } = data
+  const { content, tag, link, raw } = data
   const isArr = Array.isArray(content)
   const isStr = typeof content === 'string'
   const isHeading = tag && headingInfo.has(tag)
@@ -1208,7 +1211,7 @@ const getHtml = (
   }
 
   if (isStr) {
-    _output.ref += isHeadingLink ? '#' : markdownToHtml(content)
+    _output.ref += isHeadingLink ? '#' : (raw ? content : markdownToHtml(content))
 
     if (isHeading) {
       getHtml(

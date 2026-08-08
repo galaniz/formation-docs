@@ -177,7 +177,8 @@ beforeAll(async () => {
      * const test = TestFuncTwo({
      *   one: 'one'
      *   two: 2,
-     *   three: []
+     *   three: [],
+     *   four: 'src/**\\/*.ts'
      * })
      * @param {Generic} args ${markdownDesc}
      * @param {TestObj} [obj]
@@ -526,7 +527,8 @@ import { TestFuncTwo } from '@test/test.js'
 const test = TestFuncTwo({
   one: 'one'
   two: 2,
-  three: []
+  three: [],
+  four: 'src/**/*.ts'
 })
 \`\`\`
 
@@ -728,7 +730,8 @@ const testHtml: Record<string, string> = {
 <span><span>const</span><span> test</span><span> =</span><span> TestFuncTwo</span><span>({</span></span>
 <span><span>  one</span><span>:</span><span> '</span><span>one</span><span>'</span></span>
 <span><span>  two</span><span>: </span><span>2</span><span>,</span></span>
-<span><span>  three</span><span>:</span><span> []</span></span>
+<span><span>  three</span><span>:</span><span> [],</span></span>
+<span><span>  four</span><span>:</span><span> '</span><span>src/**/*.ts</span><span>'</span></span>
 <span><span>})</span></span></code></pre>
 <h2 id="types"%h2_attr%>Types<a href="#types" aria-label="Permalink: Types"%a_attr%>#</a></h2>
 <h3 id="testlet-1">TestLet<a href="#testlet-1" aria-label="Permalink: TestLet">#</a></h3>
@@ -1003,7 +1006,8 @@ import { TestFuncTwo } from '@test/test.js'
 const test = TestFuncTwo({
   one: 'one'
   two: 2,
-  three: []
+  three: [],
+  four: 'src/**/*.ts'
 })
 \`\`\`
 

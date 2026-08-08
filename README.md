@@ -128,13 +128,13 @@ Output normalized JSDoc data as Markdown files.
 import { renderMarkdownDocs } from '@alanizcreative/formation-docs/docs.js'
 
 await renderMarkdownDocs({
-  include: 'src/**\/*.ts',
+  include: 'src/**/*.ts',
   exclude: [
-    'src/**\/*.test.ts',
-    'src/**\/*Mock.ts'
+    'src/**/*.test.ts',
+    'src/**/*Mock.ts'
   ],
-  docsInclude: 'src/form/**\/*.ts',
-  docsExclude: 'src/**\/*Types.ts'
+  docsInclude: 'src/form/**/*.ts',
+  docsExclude: 'src/**/*Types.ts'
 })
 
 // src/button/button.ts
@@ -166,9 +166,9 @@ import { renderHtmlDocs } from '@alanizcreative/formation-docs/docs.js'
 
 await renderHtmlDocs({
   outDir: 'docs',
-  include: 'src/**\/*.ts',
-  exclude: 'src/**\/*.test.ts',
-  docsExclude: 'src/**\/*Types.ts',
+  include: 'src/**/*.ts',
+  exclude: 'src/**/*.test.ts',
+  docsExclude: 'src/**/*Types.ts',
   url: 'https://docs.formation.org'
 })
 
@@ -228,7 +228,9 @@ Plain text or nested HTML content.
 - **`tag`** <code>string</code> optional  
 HTML element tag.  
 - **`link`** <code>string</code> optional  
-Anchor link to type definition.
+Anchor link to type definition.  
+- **`raw`** <code>boolean</code> optional  
+Insert string content as pre-rendered HTML, skipping Markdown conversion.
 
 ### DocsResult  
 

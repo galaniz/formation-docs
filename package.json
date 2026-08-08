@@ -3,7 +3,7 @@
   "version": "0.0.3",
   "description": "Utilities to generate docs from JSDoc comments in TypeScript or JavaScript files",
   "main": "./lib/docs.js",
-  "packageManager": "pnpm@11.15.0",
+  "packageManager": "pnpm@11.20.0",
   "type": "module",
   "files": [
     "./lib"
@@ -39,20 +39,20 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@shikijs/transformers": "4.3.1",
+    "@shikijs/transformers": "4.4.2",
     "glob": "13.0.6",
     "jsdoc-api": "^9.3.6",
-    "shiki": "4.3.1",
+    "shiki": "4.4.2",
     "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "@types/node": "26.1.1",
-    "@typescript-eslint/eslint-plugin": "8.64.0",
-    "@typescript-eslint/parser": "8.64.0",
+    "@types/node": "26.2.0",
+    "@typescript-eslint/eslint-plugin": "8.66.0",
+    "@typescript-eslint/parser": "8.66.0",
     "@vitest/coverage-v8": "^4.1.10",
-    "eslint": "^10.7.0",
-    "terser": "5.49.0",
-    "typescript-eslint": "8.64.0",
+    "eslint": "^10.8.1",
+    "terser": "5.49.2",
+    "typescript-eslint": "8.66.0",
     "vitest": "^4.1.10"
   },
   "release-it": {
