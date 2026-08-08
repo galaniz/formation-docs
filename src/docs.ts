@@ -10,8 +10,6 @@
  * shell: npm install -D @alanizcreative/formation-docs
  */
 
-/* Imports */
-
 import type {
   DocsRenderType,
   DocsShikiOptions,
@@ -197,7 +195,8 @@ const normalizeParams = (params: DocsJsDocType[]): DocsType[] => {
     }
 
     if (defaultvalue !== undefined) {
-      docType.defaults = String(defaultvalue as number) // Cast for defaults like null, 0, false
+      // eslint-disable-next-line @typescript-eslint/no-base-to-string
+      docType.defaults = String(defaultvalue) // Defaults like null, 0, false
     }
 
     return docType
@@ -255,6 +254,9 @@ const normalizeExamples = async (
       code = await readFile(resolve(dir, code), 'utf8')
     }
 
+    // Unescape `*\/` back to `*/`, needed in source so it doesn't close the JSDoc block comment early
+    code = code?.replace(/\*\\\//g, '*/')
+
     if (!lang || !code) {
       continue
     }
@@ -287,7 +289,7 @@ const normalizeExamples = async (
 
       const content = await codeToHtml(code, shikiArgs)
 
-      newContent.push({ content })
+      newContent.push({ content, raw: true })
     }
 
     newExamples.push(newExample)
@@ -1109,7 +1111,7 @@ const getHtml = (
   _output: DocsOutputRef = { ref: '' },
   _ids: Set<string> = new Set()
 ): string => {
-  const { content, tag, link } = data
+  const { content, tag, link, raw } = data
   const isArr = Array.isArray(content)
   const isStr = typeof content === 'string'
   const isHeading = tag && headingInfo.has(tag)
@@ -1209,7 +1211,7 @@ const getHtml = (
   }
 
   if (isStr) {
-    _output.ref += isHeadingLink ? '#' : markdownToHtml(content)
+    _output.ref += isHeadingLink ? '#' : (raw ? content : markdownToHtml(content))
 
     if (isHeading) {
       getHtml(
@@ -1330,6 +1332,13 @@ const getDocs = async (args: DocsArgs): Promise<DocsResult> => {
 
     const docItems = await jsdoc.explain({ source: output }) as DocsJsDocItem[]
     const newDocItems = docItems.map(docItem => {
+      if (docItem.kind === 'class' && docItem.name === 'exports') {
+        const defaultExportName = basename(file, ext) // Fallback to file name when default export
+
+        docItem.name = defaultExportName
+        docItem.longname = defaultExportName
+      }
+
       docItem.meta = {
         ...docItem.meta,
         filename: dir
@@ -1597,7 +1606,7 @@ const getDocs = async (args: DocsArgs): Promise<DocsResult> => {
     if (!isRoot) {
       const sectionDirBase = dir.replace(`${srcDir}/`, '').split('/')[0] || ''
       const sectionDirTitleCase = titleCase(sectionDirBase)
-      const sectionDirTitle = hasFilter ? filterTitle(sectionDirTitleCase, sectionDirBase) : dirTitleCase
+      const sectionDirTitle = hasFilter ? filterTitle(sectionDirTitleCase, sectionDirBase) : sectionDirTitleCase
 
       if (!referenceMap.has(sectionDirBase)) {
         referenceMap.set(sectionDirBase, [sectionDirTitle, []])
@@ -1809,8 +1818,6 @@ const renderHtmlDocs = async (args: DocsHtmlArgs): Promise<void> => {
     await writeFile(path, newOutput)
   }
 }
-
-/* Exports */
 
 export {
   getDocs,

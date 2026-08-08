@@ -2,8 +2,6 @@
  * Docs - Types
  */
 
-/* Imports */
-
 import type { ShikiTransformerStyleToClass } from '@shikijs/transformers'
 
 /**
@@ -277,11 +275,13 @@ export interface DocsOutputRef {
  * @prop {string|DocsContent[]} content - Plain text or nested HTML content.
  * @prop {string} [tag] - HTML element tag.
  * @prop {string} [link] - Anchor link to type definition.
+ * @prop {boolean} [raw] - Insert string content as pre-rendered HTML, skipping Markdown conversion.
  */
 export interface DocsContent {
   content: string | DocsContent[]
   tag?: string
   link?: string
+  raw?: boolean
 }
 
 /**

@@ -2,8 +2,6 @@
  * Docs - Tests
  */
 
-/* Imports */
-
 import type { DocsHeading, DocsNavigationItem } from '../docsTypes.js'
 import { it, describe, expect, afterEach, beforeAll, afterAll } from 'vitest'
 import { rm, mkdtemp, mkdir, writeFile, readFile, readdir } from 'node:fs/promises'
@@ -139,8 +137,6 @@ beforeAll(async () => {
      */
     const TestConst: TestConst = 10
 
-    /* Exports */
-
     export { TestConst }
   `)
 
@@ -156,8 +152,6 @@ beforeAll(async () => {
       lorem: 'dolorem',
       ipsum: 'sed'
     }
-
-    /* Exports */
 
     export { TestLet }
   `)
@@ -183,7 +177,8 @@ beforeAll(async () => {
      * const test = TestFuncTwo({
      *   one: 'one'
      *   two: 2,
-     *   three: []
+     *   three: [],
+     *   four: 'src/**\\/*.ts'
      * })
      * @param {Generic} args ${markdownDesc}
      * @param {TestObj} [obj]
@@ -193,8 +188,6 @@ beforeAll(async () => {
     const TestFuncTwo = (args: Generic, obj?: TestObj, desc: boolean = false): string | string[] | null => {
       return ''
     }
-
-    /* Exports */
 
     export { TestFuncOne, TestFuncTwo }
   `)
@@ -219,8 +212,6 @@ beforeAll(async () => {
       yield i + 20
     }
 
-    /* Exports */
-
     export { TestGenOne, TestGenTwo }
   `)
 
@@ -239,16 +230,21 @@ beforeAll(async () => {
       constructor () {
         this.init = true
       }
-    }
 
-    /* Exports */
+      /**
+       * Test method.
+       *
+       * @return {string}
+       */
+      test (): string {
+        return 'test'
+      }
+    }
 
     export { TestBaseClass }
   `)
 
   await writeFile(`${srcDir}/test/class/TestClass.ts`, /* js */`
-    /* Imports */
-
     import { TestBaseClass } from '../TestBaseClass.js'
 
     /**
@@ -308,9 +304,27 @@ beforeAll(async () => {
       }
     }
 
-    /* Exports */
-
     export { TestClass }
+  `)
+
+  await writeFile(`${srcDir}/test/class/DefaultTestClass.ts`, /* js */`
+    import { TestBaseClass } from '../TestBaseClass.js'
+
+    /**
+     * Test extend class base description.
+     * 
+     * @extends {TestBaseClass}
+     */
+    export default class extends TestBaseClass {
+      /**
+       * Test override method.
+       * 
+       * @return {number}
+       */
+      override async test(): number {
+        return 0
+      }
+    }
   `)
 
   await writeFile(`${srcDir}/Test.js`, /* js */`
@@ -322,8 +336,6 @@ beforeAll(async () => {
     const TestJs = () => {
       return 1 + 1
     }
-
-    /* Exports */
 
     export { TestJs }
   `)
@@ -482,6 +494,18 @@ Test base initialize state.
 
 **Type:** <code>boolean</code>
 
+### Methods
+
+#### test  
+
+**<code>test(): string</code>**  
+
+Test method.
+
+##### Returns  
+
+<code>string</code>
+
 ## TestGenOne  
 
 **<code>TestGenOne(i: number): </code>**  
@@ -544,9 +568,20 @@ import { TestFuncTwo } from '@test/test.js'
 const test = TestFuncTwo({
   one: 'one'
   two: 2,
-  three: []
+  three: [],
+  four: 'src/**/*.ts'
 })
 \`\`\`
+
+## test  
+
+**<code>test(): number</code>**  
+
+Test override method.
+
+### Returns  
+
+<code>number</code>
 
 ## Types
 
@@ -584,9 +619,11 @@ Test const description.
 
 **Type:** <code><a href="%url%/%temp_dir%/src/test/README.md#testconst">TestConst</a></code>`,
 /* Class */
-'/src/test/class/README.md': `# TestClass
+'/src/test/class/README.md': `# Class
 
-## Constructor  
+## TestClass
+
+### Constructor  
 
 **<code>new TestClass(props: Map&lt;string, TestObj&gt;): TestClass</code>**  
 
@@ -594,43 +631,43 @@ Test class constructor.
 
 **Augments:** <code><a href="%url%/%temp_dir%/src/test/README.md#testbaseclass">TestBaseClass</a></code>
 
-### Parameters  
+#### Parameters  
 - **\`props\`** <code>Map&lt;string, <a href="%url%/%temp_dir%/src/test/README.md#testobj">TestObj</a>&gt;</code> required
 
-## Properties
+### Properties
 
-### props  
+#### props  
 
 Test props.  
 
 **Type:** <code>Map&lt;string, <a href="%url%/%temp_dir%/src/test/README.md#testobj">TestObj</a>&gt;</code>
 
-## Methods
+### Methods
 
-### getPrivateProp  
+#### getPrivateProp  
 
 **<code>getPrivateProp(): string</code>**  
 
 Test private class method.
 
-#### Returns  
+##### Returns  
 
 <code>string</code>
 
-### getProp  
+#### getProp  
 
 **<code>getProp(key: string): TestObj | undefined</code>**  
 
 Test class method.
 
-#### Parameters  
+##### Parameters  
 - **\`key\`** <code>string</code> required
 
-#### Returns  
+##### Returns  
 
 <code><a href="%url%/%temp_dir%/src/test/README.md#testobj">TestObj</a> | undefined</code>
 
-## Test class example
+### Test class example
 
 \`\`\`js
 import { TestClass } from '@test/testClass.js'
@@ -639,7 +676,27 @@ const test = new TestClass({
  str: 'three',
  mix: 999
 })
-\`\`\``
+\`\`\`
+
+## DefaultTestClass  
+
+Test extend class base description.
+
+### Constructor  
+
+**<code>new DefaultTestClass(): DefaultTestClass</code>**  
+
+**Augments:** <code><a href="%url%/%temp_dir%/src/test/README.md#testbaseclass">TestBaseClass</a></code>
+
+## test  
+
+**<code>test(): number</code>**  
+
+Test override method.
+
+### Returns  
+
+<code>number</code>`
 }
 
 /**
@@ -695,6 +752,12 @@ const testHtml: Record<string, string> = {
 <h4 id="init">init<a href="#init" aria-label="Permalink: init">#</a></h4>
 <p>Test base initialize state.</p>
 <p><strong>Type:</strong> <code>boolean</code></p>
+<h3 id="methods">Methods<a href="#methods" aria-label="Permalink: Methods">#</a></h3>
+<h4 id="test">test<a href="#test" aria-label="Permalink: test">#</a></h4>
+<p><strong><code>test(): string</code></strong></p>
+<p>Test method.</p>
+<h5 id="returns">Returns<a href="#returns" aria-label="Permalink: Returns">#</a></h5>
+<p><code>string</code></p>
 <h2 id="testgenone"%h2_attr%>TestGenOne<a href="#testgenone" aria-label="Permalink: TestGenOne"%a_attr%>#</a></h2>
 <p><strong><code>TestGenOne(i: number): </code></strong></p>
 <p>Test generator function description.</p>
@@ -715,7 +778,7 @@ const testHtml: Record<string, string> = {
 <dl>
 <div><dt><strong><code>str</code></strong> <code>string</code> required</dt></div>
 </dl>
-<h3 id="returns">Returns<a href="#returns" aria-label="Permalink: Returns">#</a></h3>
+<h3 id="returns-1">Returns<a href="#returns-1" aria-label="Permalink: Returns">#</a></h3>
 <p><code>Promise&lt;void&gt;</code></p>
 <h2 id="testfunctwo"%h2_attr%>TestFuncTwo<a href="#testfunctwo" aria-label="Permalink: TestFuncTwo"%a_attr%>#</a></h2>
 <p><strong><code>TestFuncTwo(args: Generic, obj?: TestObj, desc?: boolean): string | string[] | null</code></strong></p>
@@ -737,7 +800,7 @@ const testHtml: Record<string, string> = {
 </dd>
 </div>
 </dl>
-<h3 id="returns-1">Returns<a href="#returns-1" aria-label="Permalink: Returns">#</a></h3>
+<h3 id="returns-2">Returns<a href="#returns-2" aria-label="Permalink: Returns">#</a></h3>
 <p><code>string | string[] | null</code> - Test return description.</p>
 <h3 id="test-function-two-example">Test function two example<a href="#test-function-two-example" aria-label="Permalink: Test function two example">#</a></h3>
 <p>Test function two example description.</p>
@@ -746,8 +809,14 @@ const testHtml: Record<string, string> = {
 <span><span>const</span><span> test</span><span> =</span><span> TestFuncTwo</span><span>({</span></span>
 <span><span>  one</span><span>:</span><span> '</span><span>one</span><span>'</span></span>
 <span><span>  two</span><span>: </span><span>2</span><span>,</span></span>
-<span><span>  three</span><span>:</span><span> []</span></span>
+<span><span>  three</span><span>:</span><span> [],</span></span>
+<span><span>  four</span><span>:</span><span> '</span><span>src/**/*.ts</span><span>'</span></span>
 <span><span>})</span></span></code></pre>
+<h2 id="test-1"%h2_attr%>test<a href="#test-1" aria-label="Permalink: test"%a_attr%>#</a></h2>
+<p><strong><code>test(): number</code></strong></p>
+<p>Test override method.</p>
+<h3 id="returns-3">Returns<a href="#returns-3" aria-label="Permalink: Returns">#</a></h3>
+<p><code>number</code></p>
 <h2 id="types"%h2_attr%>Types<a href="#types" aria-label="Permalink: Types"%a_attr%>#</a></h2>
 <h3 id="testlet-1">TestLet<a href="#testlet-1" aria-label="Permalink: TestLet">#</a></h3>
 <p><strong>Type:</strong> <code>object</code></p>
@@ -787,49 +856,60 @@ const testHtml: Record<string, string> = {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>TestClass</title>
+<title>Class</title>
 <style></style>
 </head>
 <body>
-<h1 id="testclass">TestClass<a href="#testclass" aria-label="Permalink: TestClass">#</a></h1>
-<h2 id="constructor"%h2_attr%>Constructor<a href="#constructor" aria-label="Permalink: Constructor"%a_attr%>#</a></h2>
+<h1 id="class">Class<a href="#class" aria-label="Permalink: Class">#</a></h1>
+<h2 id="testclass"%h2_attr%>TestClass<a href="#testclass" aria-label="Permalink: TestClass"%a_attr%>#</a></h2>
+<h3 id="constructor">Constructor<a href="#constructor" aria-label="Permalink: Constructor">#</a></h3>
 <p><strong><code>new TestClass(props: Map&lt;string, TestObj&gt;): TestClass</code></strong></p>
 <p>Test class constructor.</p>
 <p><strong>Augments:</strong> <code><a href="%url%/test/#testbaseclass">TestBaseClass</a></code></p>
-<h3 id="parameters">Parameters<a href="#parameters" aria-label="Permalink: Parameters">#</a></h3>
+<h4 id="parameters">Parameters<a href="#parameters" aria-label="Permalink: Parameters">#</a></h4>
 <dl>
 <div>
 <dt><strong><code>props</code></strong> <code>Map&lt;string, <a href="%url%/test/#testobj">TestObj</a>&gt;</code> required</dt>
 </div>
 </dl>
-<h2 id="properties"%h2_attr%>Properties<a href="#properties" aria-label="Permalink: Properties"%a_attr%>#</a></h2>
-<h3 id="props">props<a href="#props" aria-label="Permalink: props">#</a></h3>
+<h3 id="properties">Properties<a href="#properties" aria-label="Permalink: Properties">#</a></h3>
+<h4 id="props">props<a href="#props" aria-label="Permalink: props">#</a></h4>
 <p>Test props.</p>
 <p><strong>Type:</strong> <code>Map&lt;string, <a href="%url%/test/#testobj">TestObj</a>&gt;</code></p>
-<h2 id="methods"%h2_attr%>Methods<a href="#methods" aria-label="Permalink: Methods"%a_attr%>#</a></h2>
-<h3 id="getprivateprop">getPrivateProp<a href="#getprivateprop" aria-label="Permalink: getPrivateProp">#</a></h3>
+<h3 id="methods">Methods<a href="#methods" aria-label="Permalink: Methods">#</a></h3>
+<h4 id="getprivateprop">getPrivateProp<a href="#getprivateprop" aria-label="Permalink: getPrivateProp">#</a></h4>
 <p><strong><code>getPrivateProp(): string</code></strong></p>
 <p>Test private class method.</p>
-<h4 id="returns">Returns<a href="#returns" aria-label="Permalink: Returns">#</a></h4>
+<h5 id="returns">Returns<a href="#returns" aria-label="Permalink: Returns">#</a></h5>
 <p><code>string</code></p>
-<h3 id="getprop">getProp<a href="#getprop" aria-label="Permalink: getProp">#</a></h3>
+<h4 id="getprop">getProp<a href="#getprop" aria-label="Permalink: getProp">#</a></h4>
 <p><strong><code>getProp(key: string): TestObj | undefined</code></strong></p>
 <p>Test class method.</p>
-<h4 id="parameters-1">Parameters<a href="#parameters-1" aria-label="Permalink: Parameters">#</a></h4>
+<h5 id="parameters-1">Parameters<a href="#parameters-1" aria-label="Permalink: Parameters">#</a></h5>
 <dl>
 <div>
 <dt><strong><code>key</code></strong> <code>string</code> required</dt>
 </div>
 </dl>
-<h4 id="returns-1">Returns<a href="#returns-1" aria-label="Permalink: Returns">#</a></h4>
+<h5 id="returns-1">Returns<a href="#returns-1" aria-label="Permalink: Returns">#</a></h5>
 <p><code><a href="%url%/test/#testobj">TestObj</a> | undefined</code></p>
-<h2 id="test-class-example"%h2_attr%>Test class example<a href="#test-class-example" aria-label="Permalink: Test class example"%a_attr%>#</a></h2>
+<h3 id="test-class-example">Test class example<a href="#test-class-example" aria-label="Permalink: Test class example">#</a></h3>
 <pre tabindex="0"><code><span><span>import</span><span> {</span><span> TestClass</span><span> }</span><span> from</span><span> '</span><span>@test/testClass.js</span><span>'</span></span>
 <span></span>
 <span><span>const</span><span> test</span><span> =</span><span> new</span><span> TestClass</span><span>({</span></span>
 <span><span> str</span><span>:</span><span> '</span><span>three</span><span>'</span><span>,</span></span>
 <span><span> mix</span><span>:</span><span> 999</span></span>
 <span><span>})</span></span></code></pre>
+<h2 id="defaulttestclass"%h2_attr%>DefaultTestClass<a href="#defaulttestclass" aria-label="Permalink: DefaultTestClass"%a_attr%>#</a></h2>
+<p>Test extend class base description.</p>
+<h3 id="constructor-1">Constructor<a href="#constructor-1" aria-label="Permalink: Constructor">#</a></h3>
+<p><strong><code>new DefaultTestClass(): DefaultTestClass</code></strong></p>
+<p><strong>Augments:</strong> <code><a href="%url%/test/#testbaseclass">TestBaseClass</a></code></p>
+<h2 id="test"%h2_attr%>test<a href="#test" aria-label="Permalink: test"%a_attr%>#</a></h2>
+<p><strong><code>test(): number</code></strong></p>
+<p>Test override method.</p>
+<h3 id="returns-2">Returns<a href="#returns-2" aria-label="Permalink: Returns">#</a></h3>
+<p><code>number</code></p>
 </body>
 </html>
   `,
@@ -959,6 +1039,18 @@ Test base initialize state.
 
 **Type:** <code>boolean</code>
 
+### Methods
+
+#### test  
+
+**<code>test(): string</code>**  
+
+Test method.
+
+##### Returns  
+
+<code>string</code>
+
 ## TestGenOne  
 
 **<code>TestGenOne(i: number): </code>**  
@@ -1021,9 +1113,20 @@ import { TestFuncTwo } from '@test/test.js'
 const test = TestFuncTwo({
   one: 'one'
   two: 2,
-  three: []
+  three: [],
+  four: 'src/**/*.ts'
 })
 \`\`\`
+
+## test  
+
+**<code>test(): number</code>**  
+
+Test override method.
+
+### Returns  
+
+<code>number</code>
 
 ## Types
 
@@ -1142,8 +1245,6 @@ Test JS description.
        * @return {string}
        */
       const testMock = (str) => str
-
-      /* Exports */
       
       export { testMock }
     `)
@@ -1204,7 +1305,27 @@ Test class base description.
 
 Test base initialize state.  
 
-**Type:** <code>boolean</code>`,
+**Type:** <code>boolean</code>
+
+## Methods
+
+### test  
+
+**<code>test(): string</code>**  
+
+Test method.
+
+#### Returns  
+
+<code>string</code># test  
+
+**<code>test(): number</code>**  
+
+Test override method.
+
+## Returns  
+
+<code>number</code>`,
       testReadMe['/src/test/class/README.md']?.replace(/%temp_dir%/g, tempDir).replace(/%url%/g, '')
     ]
 
@@ -1515,6 +1636,25 @@ describe('renderHtmlDocs()', () => {
               id: 'properties',
               title: 'Properties',
               tag: 'h3'
+            },
+            {
+              children: [
+                {
+                  children: [
+                    {
+                      id: 'returns',
+                      title: 'Returns',
+                      tag: 'h5'
+                    }
+                  ],
+                  id: 'test',
+                  title: 'test',
+                  tag: 'h4'
+                }
+              ],
+              id: 'methods',
+              title: 'Methods',
+              tag: 'h3'
             }
           ],
           id: 'testbaseclass',
@@ -1558,7 +1698,7 @@ describe('renderHtmlDocs()', () => {
               tag: 'h3'
             },
             {
-              id: 'returns',
+              id: 'returns-1',
               title: 'Returns',
               tag: 'h3'
             }
@@ -1575,7 +1715,7 @@ describe('renderHtmlDocs()', () => {
               tag: 'h3'
             },
             {
-              id: 'returns-1',
+              id: 'returns-2',
               title: 'Returns',
               tag: 'h3'
             },
@@ -1587,6 +1727,18 @@ describe('renderHtmlDocs()', () => {
           ],
           id: 'testfunctwo',
           title: 'TestFuncTwo',
+          tag: 'h2'
+        },
+        {
+          children: [
+            {
+              id: 'returns-3',
+              title: 'Returns',
+              tag: 'h3'
+            }
+          ],
+          id: 'test-1',
+          title: 'test',
           tag: 'h2'
         },
         {
@@ -1631,66 +1783,97 @@ describe('renderHtmlDocs()', () => {
         {
           children: [
             {
-              id: 'parameters',
-              title: 'Parameters',
-              tag: 'h3'
-            }
-          ],
-          id: 'constructor',
-          title: 'Constructor',
-          tag: 'h2'
-        },
-        {
-          children: [
-            {
-              id: 'props',
-              title: 'props',
-              tag: 'h3'
-            }
-          ],
-          id: 'properties',
-          title: 'Properties',
-          tag: 'h2'
-        },
-        {
-          children: [
-            {
               children: [
                 {
-                  id: 'returns',
-                  title: 'Returns',
+                  id: 'parameters',
+                  title: 'Parameters',
                   tag: 'h4'
                 }
               ],
-              id: 'getprivateprop',
-              title: 'getPrivateProp',
+              id: 'constructor',
+              title: 'Constructor',
               tag: 'h3'
             },
             {
               children: [
                 {
-                  id: 'parameters-1',
-                  title: 'Parameters',
-                  tag: 'h4'
-                },
-                {
-                  id: 'returns-1',
-                  title: 'Returns',
+                  id: 'props',
+                  title: 'props',
                   tag: 'h4'
                 }
               ],
-              id: 'getprop',
-              title: 'getProp',
+              id: 'properties',
+              title: 'Properties',
+              tag: 'h3'
+            },
+            {
+              children: [
+                {
+                  children: [
+                    {
+                      id: 'returns',
+                      title: 'Returns',
+                      tag: 'h5'
+                    }
+                  ],
+                  id: 'getprivateprop',
+                  title: 'getPrivateProp',
+                  tag: 'h4'
+                },
+                {
+                  children: [
+                    {
+                      id: 'parameters-1',
+                      title: 'Parameters',
+                      tag: 'h5'
+                    },
+                    {
+                      id: 'returns-1',
+                      title: 'Returns',
+                      tag: 'h5'
+                    }
+                  ],
+                  id: 'getprop',
+                  title: 'getProp',
+                  tag: 'h4'
+                }
+              ],
+              id: 'methods',
+              title: 'Methods',
+              tag: 'h3'
+            },
+            {
+              id: 'test-class-example',
+              title: 'Test class example',
               tag: 'h3'
             }
           ],
-          id: 'methods',
-          title: 'Methods',
+          id: 'testclass',
+          title: 'TestClass',
           tag: 'h2'
         },
         {
-          id: 'test-class-example',
-          title: 'Test class example',
+          children: [
+            {
+              id: 'constructor-1',
+              title: 'Constructor',
+              tag: 'h3'
+            }
+          ],
+          id: 'defaulttestclass',
+          title: 'DefaultTestClass',
+          tag: 'h2'
+        },
+        {
+          children: [
+            {
+              id: 'returns-2',
+              title: 'Returns',
+              tag: 'h3'
+            }
+          ],
+          id: 'test',
+          title: 'test',
           tag: 'h2'
         }
       ]
@@ -1710,7 +1893,7 @@ describe('renderHtmlDocs()', () => {
         children: [
           {
             id: '-test-class',
-            title: 'TestClass',
+            title: 'Class',
             link: '//test/class/'
           },
           {
