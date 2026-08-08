@@ -22,3 +22,15 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - `@example` title fallback and heading level.
+
+## [0.0.4] - 2026-08-08
+
+### Changed
+
+- Update dependencies to latest versions.
+
+### Fixed
+
+- Default export class names (file basename instead of exports).
+- Unescape closing comment slash in rendered `@example` output.
+- Reference section title (group directory title instead of current directory title when `filterTitle` not set).
